@@ -26,7 +26,7 @@ const Uploadimage = () => {
         const formData = new FormData();
         formData.append("file", e.target.files[0]);
 
-        const res = await fetch("http://localhost:3000/upload-file", {
+        const res = await fetch("http://localhost:3001/upload-file", {
           method: "POST",
           body: formData,
         }).then((res) => res.json());
@@ -43,7 +43,7 @@ const Uploadimage = () => {
     }
   };
   const showFileHanduler = async () => {
-    const data = await fetch("http://localhost:3000/show-files", {
+    const data = await fetch("http://localhost:3001/show-files", {
       method: "GET",
     }).then((item) => console.log(item));
     console.log(data);

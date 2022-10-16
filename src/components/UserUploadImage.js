@@ -10,7 +10,7 @@ export const UserUploadImage = () => {
   const changeHanduler = async (e) => {
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
-    const res = await fetch("http://localhost:3000/upload-file", {
+    const res = await fetch("http://localhost:3001/upload-file", {
       method: "POST",
       body: formData,
     }).then((res) => res.json());
