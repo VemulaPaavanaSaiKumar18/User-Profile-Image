@@ -8,7 +8,7 @@ const Uploadimage = () => {
   const [image, setimage] = useState();
   const [fileLoding, setfileLoding] = useState(false);
 
-  const imgHanduler = (e) => {
+  const imgHanduler = async (e) => {
     let imgSize = e.target.files[0].size * 0.001;
     let imgType = e.target.files[0].type;
 
@@ -17,13 +17,20 @@ const Uploadimage = () => {
       imgType === "image/png" ||
       imgType === "image/jpg"
     ) {
-      console.log("yes selecter file mawa");
       if (imgSize >= 500 && imgSize <= 1024) {
         setfileLoding(true);
         setTimeout(() => {
           setimage(URL.createObjectURL(e.target.files[0]));
           setfileLoding(false);
         }, 3000);
+        const formData = new FormData();
+        formData.append("file", e.target.files[0]);
+
+        const res = await fetch("http://localhost:3000/upload-file", {
+          method: "POST",
+          body: formData,
+        }).then((res) => res.json());
+        alert(JSON.stringify(`${res.message}, status: ${res.status}`));
       } else {
         alert(
           `Please choose file between 0.5 - 1.0 mb other than ${Math.round(
@@ -35,6 +42,13 @@ const Uploadimage = () => {
       alert("Please upload in this formates {JPEG,JPG,PNG}");
     }
   };
+  const showFileHanduler = async () => {
+    const data = await fetch("http://localhost:3000/show-files", {
+      method: "GET",
+    }).then((item) => console.log(item));
+    console.log(data);
+  };
+
   return (
     <div>
       <Card
@@ -53,9 +67,9 @@ const Uploadimage = () => {
           sx={{
             width: "200px",
             height: "200px",
-            borderRadius: "50%",
+            borderRadius: "40%",
             margintop: "20px",
-            border: "2px solid blue",
+            border: "10px solid skyblue",
             margin: "auto",
           }}
         />
@@ -75,6 +89,16 @@ const Uploadimage = () => {
               type="file"
               onChange={imgHanduler}
             />
+          </Button>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{
+              margin: "auto",
+            }}
+            onClick={showFileHanduler}
+          >
+            Show files
           </Button>
         </CardActions>
       </Card>
